@@ -30,9 +30,9 @@ func computeMaxProfit(stockPrices: [Int]) -> Int {
     var high = Pair(index: 0, value: Int.min)
     
     for (index, price) in stockPrices.enumerated() {
-        if (price < low.value) {
+        if price < low.value {
             low = Pair(index: index, value: price)
-        } else if (price > high.value) {
+        } else if price > high.value {
             high = Pair(index: index, value: price)
         }
     }
