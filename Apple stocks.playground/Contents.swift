@@ -10,28 +10,30 @@
  Write an efficient function that takes stock_prices_yesterday and returns the best profit I could have made from 1 purchase and 1 sale of 1 Apple stock yesterday.
  
  test on [10, 7, 5, 8, 11, 9], answer should be 6
- 
- Need a function that goes through the list and finds all ordered pairs (m,n) such that index of m < index of n, only keeping the pair with the largest (n-m) 
+ If I test on [10, 7, 5, 8, 11, 9, 3, 2, 1], the answer should still be 6
  */
 
-struct Pair {
-    var index: Int
-    var value: Int
-}
 
 func computeMaxProfit(stockPrices: [Int]) -> Int {
-    var low = Pair(index: 0, value: Int.max)
-    var high = Pair(index: 0, value: Int.min)
+    if stockPrices.isEmpty {
+        return 0
+    }
     
-    for (index, price) in stockPrices.enumerated() {
-        if price < low.value {
-            low = Pair(index: index, value: price)
-        } else if price > high.value {
-            high = Pair(index: index, value: price)
+    var lowestPrice = stockPrices[0]
+    var bestProfit = 0
+    
+    for price in stockPrices {
+        if price < lowestPrice {
+            lowestPrice = price
+        }
+        let possibleProfit = price - lowestPrice
+        if possibleProfit > bestProfit {
+            bestProfit = possibleProfit
         }
     }
-    return high.value - low.value
+    return bestProfit
 }
 
-let testPrices = [10, 7, 5, 8, 11, 9]
-assert(computeMaxProfit(stockPrices: testPrices) == 6)
+assert(computeMaxProfit(stockPrices: [10, 7, 5, 8, 11, 9]) == 6)
+
+assert(computeMaxProfit(stockPrices: [10, 7, 5, 8, 11, 9, 3, 2, 1]) == 6)
