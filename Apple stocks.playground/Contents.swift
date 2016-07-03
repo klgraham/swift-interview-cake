@@ -1,5 +1,3 @@
-import Foundation
-
 /*
  *** Interview Cake, problem 1 ***
  
@@ -42,4 +40,5 @@ func computeMaxProfit(stockPrices: [Int]) -> Int {
 }
 
 let testPrices = [10, 7, 5, 8, 11, 9]
-computeMaxProfit(stockPrices: testPrices) == 6
+assert(computeMaxProfit(stockPrices: testPrices) == 6)
+
