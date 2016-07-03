@@ -12,45 +12,30 @@
  Want the product of numbers before the specified index and the product of the numbers after the specified index
  */
 
-func arrayProd(_ x: [Int]) -> Int {
-    return x.reduce(1, combine: *)
-}
-
-func elementsBefore(index: Int, inList: [Int]) -> [Int] {
-    var elementsBefore = [Int]()
+func productOfElements(in list: [Int], until stop: Int) -> Int {
+    var prod = 1
+    var index = 0
     
-    for i in 0..<inList.count {
-        if i < index {
-            elementsBefore.append(inList[i])
-        }
+    while index < stop {
+        prod *= list[index]
+        index += 1
     }
-    return elementsBefore
+    return prod
 }
 
-func elementsAfter(index: Int, inList: [Int]) -> [Int] {
-    var elementsAfter = [Int]()
-    
-    for i in 0..<inList.count {
-        if i > index {
-            elementsAfter.append(inList[i])
-        }
-    }
-    return elementsAfter
-}
-
-// I tried implementing the for loop using array.map, but that showed that map does not 
-// iterate through the list in order
 func getProductsOfAllIntsExceptAtIndex(_ list: [Int]) -> [Int] {
+    let reversedList: [Int] = list.reversed()
+    let N = list.count
+    var productList = [Int]()
     
-    if list.isEmpty {
-        return [Int]()
-    } else {
-        var result = [Int]()
-        for i in 0..<list.count {
-            result.append(arrayProd(elementsBefore(index: i, inList: list)) * arrayProd(elementsAfter(index: i, inList: list)))
-        }
-        return result
+    for i in 0..<N {
+        let reversedIndex = N - 1 - i
+        let before = productOfElements(in: list, until: i)
+        let after = productOfElements(in: reversedList, until: reversedIndex)
+        productList.append(before * after)
     }
+    
+    return productList
 }
 
 getProductsOfAllIntsExceptAtIndex([1, 7, 3, 4]) == [84, 12, 28, 21]
