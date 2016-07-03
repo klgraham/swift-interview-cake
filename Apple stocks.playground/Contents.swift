@@ -14,31 +14,19 @@
  Need a function that goes through the list and finds all ordered pairs (m,n) such that index of m < index of n, only keeping the pair with the largest (n-m) 
  */
 
-struct Pair {
-    let index: Int
-    let value: Int
-}
-
-func <(lhs: Pair, rhs: Pair) -> Bool {
-    return lhs.index < rhs.index && lhs.value < rhs.value
-}
-
-// Pair(index: 3, value: 4) < Pair(index: 5, value: 7) => true
-
 func computeMaxProfit(stockPrices: [Int]) -> Int {
-    var low = Pair(index: 0, value: Int.max)
-    var high = Pair(index: 0, value: Int.min)
+    var low = Int.max
+    var high = Int.min
     
-    for (index, price) in stockPrices.enumerated() {
-        if (price < low.value) {
-            low = Pair(index: index, value: price)
-        } else if (price > high.value) {
-            high = Pair(index: index, value: price)
+    for price in stockPrices {
+        if price < low {
+            low = price
+        } else if price > high {
+            high = price
         }
     }
-    return high.value - low.value
+    return high - low
 }
 
 let testPrices = [10, 7, 5, 8, 11, 9]
 assert(computeMaxProfit(stockPrices: testPrices) == 6)
-
