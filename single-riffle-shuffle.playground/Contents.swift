@@ -42,7 +42,7 @@ func riffleShuffle(deck: [Int]) -> [Int] {
  between domain walls or the average domain size to see if we have a riffled deck. 
  Here is a criterions: average domain wall distance > 3
  
- The two statistics amount to t
+ I've recently learned that this is an example of the [longest common substring problem](https://en.wikipedia.org/wiki/Longest_common_substring_problem)
  */
 
 func deckIsRiffled(_ deck: [Int], domainSeparatationThreshold: Double = 3.0) -> Bool {
