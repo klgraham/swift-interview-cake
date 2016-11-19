@@ -14,18 +14,23 @@ struct Meeting: CustomStringConvertible {
 }
 
 extension Meeting {
+    // meeting A ends before meeting B starts
     func isBefore(_ m: Meeting) -> Bool {
         return self.end < m.start
     }
     
+    // meeting A is after meeting B if B ends before A starts
     func isAfter(_ m: Meeting) -> Bool {
         return m.end < self.start
     }
     
+    // two meetings overlap if A is not before B and not after B
+    // this allows one to start when the other ends
     func overlapsWith(_ m: Meeting) -> Bool {
         return !isBefore(m) && !isAfter(m)
     }
     
+    // two meetings conflict if B starts before A ends
     func conflictsWith(_ m: Meeting) -> Bool {
         return self.end > m.start
     }
