@@ -13,27 +13,37 @@
  If I test on [10, 7, 5, 8, 11, 9, 3, 2, 1], the answer should still be 6
  */
 
-
-func computeMaxProfit(stockPrices: [Int]) -> Int {
-    if stockPrices.isEmpty {
-        return 0
+enum StockPriceError: Error {
+    case notEnoughStocksToComparePrices
+}
+func computeMaxProfit(stockPricesYesterday: [Int]) throws -> Int {
+    if stockPricesYesterday.count < 2 {
+        throw StockPriceError.notEnoughStocksToComparePrices
     }
     
-    var lowestPrice = stockPrices[0]
-    var bestProfit = 0
+    var lowestPrice = stockPricesYesterday[0]
+    var bestProfit = stockPricesYesterday[1] - stockPricesYesterday[0]
     
-    for price in stockPrices {
-        if price < lowestPrice {
-            lowestPrice = price
-        }
+    for price in stockPricesYesterday {
         let possibleProfit = price - lowestPrice
-        if possibleProfit > bestProfit {
-            bestProfit = possibleProfit
-        }
+        
+        lowestPrice = min(price, lowestPrice)
+        bestProfit = max(possibleProfit, bestProfit)
     }
     return bestProfit
 }
 
-assert(computeMaxProfit(stockPrices: [10, 7, 5, 8, 11, 9]) == 6)
+print("Can compute correct best profit: \(try computeMaxProfit(stockPricesYesterday: [10, 7, 5, 8, 11, 9]) == 6)\n")
 
-assert(computeMaxProfit(stockPrices: [10, 7, 5, 8, 11, 9, 3, 2, 1]) == 6)
+print("Can compute correct best profit: \(try computeMaxProfit(stockPricesYesterday: [10, 7, 5, 8, 11, 9, 3, 2, 1]) == 6)\n")
+
+print("If prices always go down, best profit is negative: \(try computeMaxProfit(stockPricesYesterday: [34, 30, 25, 23, 20, 17, 15, 12, 8, 6, 4, 2, 1]) >= 0)\n")
+
+print("If prices don't change, best profit is 0: \(try computeMaxProfit(stockPricesYesterday: [3, 3, 3, 3, 3, 3]) == 0)\n")
+
+// Need at least two prices
+let singlePrice = try? computeMaxProfit(stockPricesYesterday: [3])
+
+if singlePrice == nil {
+    print("Can't compute best price from [3], need at least two prices for comparison")
+}
