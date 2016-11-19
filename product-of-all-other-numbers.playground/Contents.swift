@@ -12,30 +12,28 @@
  Want the product of numbers before the specified index and the product of the numbers after the specified index
  */
 
-func productOfElements(in list: [Int], until stop: Int) -> Int {
-    var prod = 1
-    var index = 0
+func getProductsOfAllIntsExceptAtIndex(_ a: [Int]) -> [Int] {
+    let n = a.count
+    var products = [Int](repeating: 0, count: n)
+    var productSoFar = 1
     
-    while index < stop {
-        prod *= list[index]
-        index += 1
-    }
-    return prod
-}
-
-func getProductsOfAllIntsExceptAtIndex(_ list: [Int]) -> [Int] {
-    let reversedList: [Int] = list.reversed()
-    let N = list.count
-    var productList = [Int]()
-    
-    for i in 0..<N {
-        let reversedIndex = N - 1 - i
-        let before = productOfElements(in: list, until: i)
-        let after = productOfElements(in: reversedList, until: reversedIndex)
-        productList.append(before * after)
+    // fwd pass, O(n)
+    for i in 0..<n {
+        products[i] = productSoFar
+        productSoFar *= a[i]
     }
     
-    return productList
+    // backwards pass, O(n)
+    productSoFar = 1
+    var i = n-1
+    while i >= 0 {
+        products[i] *= productSoFar
+        productSoFar *= a[i]
+        i -= 1
+    }
+    
+    print(products)
+    return products
 }
 
 getProductsOfAllIntsExceptAtIndex([1, 7, 3, 4]) == [84, 12, 28, 21]
