@@ -59,25 +59,25 @@ func condense(meetings: [Meeting]) throws -> [Meeting] {
     }
     
     var condensedMeetings = [Meeting]()
-    var previousMeeting = meetings[0]
     
     // meetings must be sorted, this is O(n log n)
     // if it is guaranteed that the input is sorted, this can be skipped.
     let sortedMeetings = meetings.sorted()
+    var previousMeeting = sortedMeetings[0]
     
     // iterating through the list once is O(n)
     for m in 1..<meetings.count {
-        let meeting = sortedMeetings[m]
+        let currentMeeting = sortedMeetings[m]
         
-        if previousMeeting.overlapsWith(meeting) {
-            previousMeeting = previousMeeting + meeting
+        if previousMeeting.overlapsWith(currentMeeting) {
+            let combinedMeeting = previousMeeting + currentMeeting
+            previousMeeting = combinedMeeting
         } else {
             condensedMeetings.append(previousMeeting)
-            previousMeeting = meeting
+            previousMeeting = currentMeeting
         }
     }
     condensedMeetings.append(previousMeeting)
-    
     return condensedMeetings
 }
 
@@ -114,7 +114,7 @@ func showConflicting(meetings: [Meeting]) throws  -> [MeetingPair] {
     // if it is guaranteed that the input is sorted, this can be skipped.
     let sortedMeetings = meetings.sorted()
     
-    var previousMeeting = meetings[0]
+    var previousMeeting = sortedMeetings[0]
     
     // O(n) iteration
     for m in 1..<meetings.count {
@@ -133,20 +133,20 @@ var meetings = [Meeting(from: 0, to: 1), Meeting(from: 3, to: 5), Meeting(from: 
 
 var condensedMeetings = [Meeting(from: 0, to: 1), Meeting(from: 3, to: 8), Meeting(from: 9, to: 12)]
 
-print("Can condense meetings when meetings overlap: \(try condense(meetings: meetings) == condensedMeetings)")
+print("Can condense meetings when meetings overlap: \(try condense(meetings: meetings) == condensedMeetings)\n")
 
 var conflictingMeetings = [MeetingPair(Meeting(from: 3, to: 5), Meeting(from: 4, to: 8))]
-print("Can get a list of overlapping meetings: \(try showConflicting(meetings: meetings) == conflictingMeetings)")
+print("Can get a list of overlapping meetings: \(try showConflicting(meetings: meetings) == conflictingMeetings)\n")
 
 meetings = [Meeting(from: 1, to: 2), Meeting(from: 2, to: 3)]
-print("Can condense meetings when adjacent meetings don't quite overlap: \(try condense(meetings: meetings) == [Meeting(from: 1, to: 3)])")
+print("Can condense meetings when adjacent meetings don't quite overlap: \(try condense(meetings: meetings) == [Meeting(from: 1, to: 3)])\n")
 
 meetings = [Meeting(from: 1, to: 5), Meeting(from: 2, to: 3)]
-print("Can condense meetings when a later meeting is subsumed by an earlier one: \(try condense(meetings: meetings) == [Meeting(from: 1, to: 5)])")
+print("Can condense meetings when a later meeting is subsumed by an earlier one: \(try condense(meetings: meetings) == [Meeting(from: 1, to: 5)])\n")
 
 meetings = [Meeting(from: 1, to: 10), Meeting(from: 2, to: 6), Meeting(from: 3, to: 5), Meeting(from: 7, to: 9)]
-print("Can condense meetings when a later meeting is subsumed by an earlier one: \(try condense(meetings: meetings) == [Meeting(from: 1, to: 10)])")
+print("Can condense meetings when a later meeting is subsumed by an earlier one: \(try condense(meetings: meetings) == [Meeting(from: 1, to: 10)])\n")
 
 meetings = [Meeting(from: 4, to: 8), Meeting(from: 10, to: 12), Meeting(from: 0, to: 1), Meeting(from: 3, to: 5), Meeting(from: 9, to: 10)]
 condensedMeetings = [Meeting(from: 0, to: 1), Meeting(from: 3, to: 8), Meeting(from: 9, to: 12)]
-print("Can condense meetings regardless of order of input list: \(try condense(meetings: meetings) == condensedMeetings)")
+print("Can condense meetings regardless of order of input list: \(try condense(meetings: meetings) == condensedMeetings)\n")
